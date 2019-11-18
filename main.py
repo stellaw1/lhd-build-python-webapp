@@ -3,7 +3,7 @@
 
 # Import Flask
 import flask
-
+import requests
 
 # Create the application
 app = flask.Flask(__name__)
@@ -42,16 +42,19 @@ def process_query():
 
 
 def formRequest(input):
-    # TODO
-    return ""  # return some string
+    return API_URL + "key={k}&input={i}".format(k=readKey(), i=input)
 
 
 def makeGET(input):
-    # TODO
-    return None  # return some response
+    response = requests.get(input)
+    if response:
+        return response.json()
+    else:
+        return "Error GETting that URL. Check to see if it is well-formed?"
 
 
 def readKey():
+    # fetches key from secrets.findplacefromtext
     f = open("secrets.txt", "r")
     contents = f.read()
     return contents.strip()
